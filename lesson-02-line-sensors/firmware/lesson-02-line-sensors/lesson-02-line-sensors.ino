@@ -7,8 +7,8 @@
 #define IN3 3  // пины левого мотора, ШИМ
 #define IN4 5
 
-#define LEFT_SENS A1   // левый датчик линии
-#define RIGHT_SENS A0  // правый
+#define LEFT_SENS A0   // левый датчик линии
+#define RIGHT_SENS A1  // правый
 
 void setup() {
   Serial.begin(9600);
@@ -52,7 +52,7 @@ void followLine() {
   static float errOld = 0.0;  // память о прошлой ошибке
 
   // 1. Считаем текущую ошибку (разницу между показаниями датчиков)
-  float err = (analogRead(RIGHT_SENS) * sensorBalance) - analogRead(LEFT_SENS);
+  float err = (analogRead(LEFT_SENS) * sensorBalance) - analogRead(RIGHT_SENS);
 
   // 2. Считаем управляющее воздействие (П-часть + Д-часть)
   float control = (err * kp) + ((err - errOld) * kd);
