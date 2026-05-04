@@ -1,4 +1,4 @@
-// УРОК 2: движение по линии
+// УРОК 3: подсчет количества перекрестков
 
 #define IN1 3  // пины левого мотора, ШИМ
 #define IN2 5
@@ -7,6 +7,8 @@
 
 #define LEFT_SENS A0   // пин левого датчика
 #define RIGHT_SENS A1  // пин правого  датчика
+
+#define TRESHOLD 300  // условие перекрестка: слева и справа темная линия
 
 void setup() {
   pinMode(IN1, OUTPUT);  // все пины в режиме работы OUTPUT - управляем нагрузкой
@@ -17,7 +19,7 @@ void setup() {
   Serial.begin(9600);  // открываем монитор порта
 }
 
-void motors(int16_t speed1, int16_t speed2) {  // функция движения с прошлого урока
+void motors(int16_t speed1, int16_t speed2) {  // функция движения с первого урока
   speed1 = constrain(speed1, -255, 255);
   speed2 = constrain(speed2, -255, 255);
 
@@ -64,13 +66,21 @@ void followLine() {  // движение по линии
   errOld = err;
 }
 
+uint8_t crossRoad() {
+  bool isCross = (analogRead(LEFT_SENS) < TRESHOLD && analogRead(RIGHT_SENS) < TRESHOLD);  // проверяем, что слева и справа темно
+
+  static bool wasCross = false;  // логический флаг, который позволит отличить ситуацию, когда мы едем по перекрестку, от момента когда на него только заехали
+  uint8_t count = 0;             // в этой строчке есть ошибка
+
+  if (isCross) count = count + 1;  // и в этой тоже
+                                   // а здесь чего-то не хватает
+  return count;
+}
+
 void loop() {
-  sensors();
+  // sensors();
+  uint8_t crossCount = crossRoad();
 
-  // TODO: Подберите коэффициенты kp, kd для ПД-регулятора.
-  // Если показания датчиков сильно отличаются на одном фоне, подберите коэффициент sensorBalance.
-  // Коэффициенты ПД-регулятора зависят от базовой скорости движения speed.
-  // (Совет: перед запуском робота на трассе закомментируй строку sensors(), чтобы он реагировал быстрее)
-
-  // followLine();
+  // TODO: напишите код, чтобы робот ехал по линии (followLine)
+  // и остановился, когда crossCount достигнет 5.
 }
