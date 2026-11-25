@@ -1,0 +1,29 @@
+name: Проверка
+
+on: [push, pull_request]
+
+jobs:
+  compile:
+    name: Компиляция скетчей
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: arduino/compile-sketches@v1
+        with:
+          fqbn: arduino:avr:nano
+          sketch-paths: |
+            - lesson-00-robot-test/firmware/lesson-00-robot-test
+            - lesson-01-movement/firmware/lesson-01-movement
+            - lesson-02-line-pd/firmware/lesson-02-line-pd
+            - lesson-03-crossroads/firmware/lesson-03-crossroads
+            - lesson-04-short-track/firmware/lesson-04-short-track
+
+  links:
+    name: Ссылки и картинки в md
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: lycheeverse/lychee-action@v2
+        with:
+          args: --offline --no-progress './**/*.md'
+          fail: true
