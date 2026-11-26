@@ -32,12 +32,20 @@ void followLine() {
   // TODO 1: перенесите свои kp, kd и шаг цикла. Добавьте накопление ошибки и ki.
   const float kp = 0.1;  // начните с проверки знака
   const float kd = 0.0;
-  static int16_t errOld = 0;
+  static int16_t errOld = 0;  // ошибка на предыдущем шаге
 
+  // Ошибка положения: показание левого датчика минус показание правого.
   int16_t err = analogRead(LEFT_SENS) - analogRead(RIGHT_SENS);
-  float control = kp * err + kd * (err - errOld);
+
+  // Для Д-составляющей находим изменение ошибки за один шаг.
+  int16_t dErr = err - errOld;
+  // TODO 1: здесь прибавьте текущую ошибку к накопленной сумме.
+  errOld = err;  // запоминаем ошибку для следующего шага
+
+  // Управляющее воздействие: поправку прибавляем к скорости левого колеса
+  // и вычитаем из скорости правого.
+  float control = kp * err + kd * dErr;
   motors(speed + control, speed - control);
-  errOld = err;
   delay(10);
 }
 

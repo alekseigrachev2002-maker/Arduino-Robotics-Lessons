@@ -11,6 +11,7 @@
 
 #define TRIG 12  // цифровые пины HC-SR04: в этом курсе TRIG — D12, ECHO — D13
 #define ECHO 13
+
 void motors(int16_t speed1, int16_t speed2);
 void wheelsTest();
 void startTest();
