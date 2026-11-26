@@ -31,7 +31,7 @@
 
 <p align="center"><img src="../assets/img/01-wheel-motion.png" alt="Почему робот поворачивает" width="100%"></p>
 
-[Смотреть видео «Почему робот поворачивает»](../assets/video/01-wheel-motion.mp4)
+[Смотреть видео «Почему робот поворачивает»](https://alekseigrachev2002-maker.github.io/Arduino-Robotics-Lessons/assets/video/01-wheel-motion.mp4)
 
 ## Задания (TODO)
 

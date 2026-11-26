@@ -12,7 +12,7 @@
 
 <p align="center"><img src="../assets/img/02-line-error.png" alt="Ошибка положения на линии" width="100%"></p>
 
-[Смотреть видео «Ошибка положения на линии»](../assets/video/02-line-error.mp4)
+[Смотреть видео «Ошибка положения на линии»](https://alekseigrachev2002-maker.github.io/Arduino-Robotics-Lessons/assets/video/02-line-error.mp4)
 
 Примем `err = L - R`. Когда левый датчик видит чёрное, а правый — белое, ошибка отрицательна. Робот должен повернуть влево: левое колесо замедляется, правое ускоряется.
 
@@ -22,13 +22,13 @@
 
 <p align="center"><img src="../assets/img/02-proportional.png" alt="Подбор П-коэффициента" width="100%"></p>
 
-[Смотреть видео «Подбор П-коэффициента»](../assets/video/02-proportional.mp4)
+[Смотреть видео «Подбор П-коэффициента»](https://alekseigrachev2002-maker.github.io/Arduino-Robotics-Lessons/assets/video/02-proportional.mp4)
 
 Д-составляющая учитывает изменение ошибки между соседними измерениями. Она помогает погасить раскачку, когда робот возвращается к линии.
 
 <p align="center"><img src="../assets/img/02-derivative.png" alt="Добавление Д-составляющей" width="100%"></p>
 
-[Смотреть видео «Добавление Д-составляющей»](../assets/video/02-derivative.mp4)
+[Смотреть видео «Добавление Д-составляющей»](https://alekseigrachev2002-maker.github.io/Arduino-Robotics-Lessons/assets/video/02-derivative.mp4)
 
 ## Один шаг регулятора
 

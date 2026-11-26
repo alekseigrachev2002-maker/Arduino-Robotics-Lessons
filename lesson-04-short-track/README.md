@@ -51,7 +51,7 @@ float distanceCm() {
 
 <p align="center"><img src="../assets/img/04-green-cube.png" alt="Зелёный кубик справа — робот поворачивает налево" width="100%"></p>
 
-[Смотреть видео «Зелёный кубик справа — робот поворачивает налево»](../assets/video/04-green-cube.mp4)
+[Смотреть видео «Зелёный кубик справа — робот поворачивает налево»](https://alekseigrachev2002-maker.github.io/Arduino-Robotics-Lessons/assets/video/04-green-cube.mp4)
 
 ## Задания (TODO)
 
