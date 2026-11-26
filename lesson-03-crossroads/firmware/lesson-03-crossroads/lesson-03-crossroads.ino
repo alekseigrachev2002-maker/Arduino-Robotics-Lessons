@@ -29,8 +29,8 @@ void motors(int16_t speed1, int16_t speed2) {  // двигаться (левый
 
 void followLine() {
   const int16_t speed = 150;
-  // TODO 1: перенесите свои kp, kd и шаг цикла. Добавьте накопление ошибки и ki.
-  const float kp = 0.1;  // начните с проверки знака
+  // TODO 1: перенесите настройки ПД, добавьте И-составляющую и сравните два заезда на дуге.
+  const float kp = 0.0;
   const float kd = 0.0;
   static int16_t errOld = 0;  // ошибка на предыдущем шаге
 
@@ -39,7 +39,6 @@ void followLine() {
 
   // Для Д-составляющей находим изменение ошибки за один шаг.
   int16_t dErr = err - errOld;
-  // TODO 1: здесь прибавьте текущую ошибку к накопленной сумме.
   errOld = err;  // запоминаем ошибку для следующего шага
 
   // Управляющее воздействие: поправку прибавляем к скорости левого колеса
@@ -50,11 +49,14 @@ void followLine() {
 }
 
 uint16_t crossRoad() {
-  const int16_t threshold = 500;  // TODO 2: подставьте порог из своих измерений.
-  static uint16_t count = 0;
+  const int16_t threshold = 500;  // TODO 2: выберите порог чёрного по измерениям обоих датчиков.
+  uint16_t count = 0;
   static bool wasCross = false;
   bool isCross = analogRead(LEFT_SENS) < threshold && analogRead(RIGHT_SENS) < threshold;
-  // TODO 3: прибавьте единицу при въезде и запомните isCross перед выходом.
+  // TODO 3: исправьте три ошибки в счётчике. Один въезд — один отсчёт.
+  if (isCross) {
+    count = count + 1;
+  }
   return count;
 }
 
@@ -69,7 +71,7 @@ void setup() {
 
 void loop() {
   uint16_t crossings = crossRoad();
-  // Serial.println(crossings);  // TODO 3: для проверки на столе замените followLine() на motors(0, 0).
-  // TODO 4: при crossings >= 5 остановите моторы и пропустите followLine().
+  // Serial.println(crossings);  // для проверки счётчика на столе
+  // TODO 4: остановитесь на пятом перекрёстке и сохраняйте остановку.
   followLine();
 }
