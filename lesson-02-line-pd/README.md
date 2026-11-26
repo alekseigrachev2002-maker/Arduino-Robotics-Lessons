@@ -32,19 +32,19 @@
 
 ## Один шаг регулятора
 
-Найдите `followLine()` в стартовом скетче. В `setup()` оставьте инициализацию. В `loop()` вызывайте `followLine()`, затем `delay(10)`. На время езды отключите вывод в порт: он меняет длительность шага.
+Найдите `followLine()` в стартовом скетче. В конце `followLine()` сохраните текущую ошибку в `errOld`. Задержка `delay(10)` внутри функции задаёт паузу до следующего измерения. На время езды отключите вывод в порт: он меняет длительность шага.
 
 ```cpp
 void followLine() {
-  const int speed = 150;
-  const float kp = 0.1;  // начните с проверки знака
-  const float kd = 0.0;
-  static int errOld = 0;
-
-  int err = analogRead(A0) - analogRead(A1);
+  const int16_t speed = 150;
+  const float kp = 0.1;  // TODO 3: подберите коэффициент на повороте.
+  const float kd = 0.0;  // TODO 4: погасите раскачку на выходе.
+  static int16_t errOld = 0;
+  int16_t err = analogRead(LEFT_SENS) - analogRead(RIGHT_SENS);
   float control = kp * err + kd * (err - errOld);
   motors(speed + control, speed - control);
   errOld = err;
+  delay(10);
 }
 ```
 

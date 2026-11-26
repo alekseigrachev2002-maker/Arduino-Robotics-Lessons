@@ -6,20 +6,8 @@
 #define LEFT_SENS A0   // пин левого датчика линии
 #define RIGHT_SENS A1  // пин правого датчика линии
 
-#define TRIG 12  // пины дальномера HC-SR04 (проверьте по схеме своего робота)
+#define TRIG 12  // цифровые пины HC-SR04: в этом курсе TRIG — D12, ECHO — D13
 #define ECHO 13
-
-void robotInit() {  // настройка пинов и монитора порта - вызвать первой строкой в setup()
-  pinMode(IN1, OUTPUT);  // пины моторов в режиме OUTPUT - управляем нагрузкой
-  pinMode(IN2, OUTPUT);
-  pinMode(IN3, OUTPUT);
-  pinMode(IN4, OUTPUT);
-
-  pinMode(TRIG, OUTPUT);  // TRIG - запускаем измерение
-  pinMode(ECHO, INPUT);   // ECHO - слушаем ответ
-
-  Serial.begin(9600);  // открываем монитор порта
-}
 
 void motors(int16_t speed1, int16_t speed2) {  // двигаться (левый мотор, правый мотор)
   speed1 = constrain(speed1, -255, 255);       // сначала ограничиваем скорость от -255 до 255
@@ -42,26 +30,39 @@ void motors(int16_t speed1, int16_t speed2) {  // двигаться (левый
   }
 }
 
-unsigned long distanceCm() {
+float distanceCm() {
   digitalWrite(TRIG, LOW);
   delayMicroseconds(2);
   digitalWrite(TRIG, HIGH);
   delayMicroseconds(10);
   digitalWrite(TRIG, LOW);
-  return pulseIn(ECHO, HIGH, 30000) / 58;
+
+  uint32_t duration = pulseIn(ECHO, HIGH, 30000);  // длительность эха в мкс
+  return duration * 343.0 / (2.0 * 10000.0);
 }
 
 void setup() {
-  robotInit();
+  pinMode(IN1, OUTPUT);  // пины моторов в режиме OUTPUT - управляем нагрузкой
+  pinMode(IN2, OUTPUT);
+  pinMode(IN3, OUTPUT);
+  pinMode(IN4, OUTPUT);
+
+  pinMode(TRIG, OUTPUT);  // TRIG - запускаем измерение
+  pinMode(ECHO, INPUT);   // ECHO - слушаем ответ
+
+  Serial.begin(9600);  // открываем монитор порта
 }
 
 void loop() {
-  // TODO 1: измерьте расстояние с кубиком и без него. При тайм-ауте получите 0.
+  // TODO 1: измерьте расстояние с кубиком и без него, выберите порог.
   Serial.println(distanceCm());
   delay(100);
-  // TODO 2: перенесите followLine(), crossRoad() и свои настройки из урока 03.
-  // Замените вывод и задержку выше движением по линии до нижнего X.
-  // TODO 3: проверьте ветви по очереди и выберите свободную.
-  // TODO 4: считайте въезды после выезда с X; остановите робота на финише.
-  // TODO 5 (дополнительно): если кубика нет, пройдите прямо до третьего перекрёстка.
+
+  // TODO 2: перенесите followLine(), crossRoad() и настройки из урока 03.
+  // Замените диагностику выше заездом по часовой стрелке до первой остановки на X.
+  // TODO 3: на остановке проверьте дальномером три направления.
+  // Кубик слева — направо, справа — налево, кубика нет — прямо.
+  // TODO 4: после выезда с X считайте новые перекрёстки до финиша.
+  // После левого поворота финиш на первом, после правого или прямо — на третьем.
+  // TODO 5: проверьте все три заезда. На финише робот должен оставаться на месте.
 }

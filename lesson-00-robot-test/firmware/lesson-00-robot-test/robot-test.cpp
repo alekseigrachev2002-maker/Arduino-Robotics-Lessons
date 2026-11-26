@@ -1,28 +1,5 @@
 #include "robot-test.h"
 
-#define IN1 11  // пины левого мотора, ШИМ
-#define IN2 6
-#define IN3 5  // пины правого мотора, ШИМ
-#define IN4 3
-
-#define LEFT_SENS A0   // пин левого датчика линии
-#define RIGHT_SENS A1  // пин правого датчика линии
-
-#define TRIG 12  // пины дальномера HC-SR04 (проверьте по схеме своего робота)
-#define ECHO 13
-
-void robotInit() {  // настройка пинов и монитора порта - вызвать первой строкой в setup()
-  pinMode(IN1, OUTPUT);  // пины моторов в режиме OUTPUT - управляем нагрузкой
-  pinMode(IN2, OUTPUT);
-  pinMode(IN3, OUTPUT);
-  pinMode(IN4, OUTPUT);
-
-  pinMode(TRIG, OUTPUT);  // TRIG - запускаем измерение
-  pinMode(ECHO, INPUT);   // ECHO - слушаем ответ
-
-  Serial.begin(9600);  // открываем монитор порта
-}
-
 void motors(int16_t speed1, int16_t speed2) {  // двигаться (левый мотор, правый мотор)
   speed1 = constrain(speed1, -255, 255);       // сначала ограничиваем скорость от -255 до 255
   speed2 = constrain(speed2, -255, 255);
@@ -83,7 +60,7 @@ void startTest() {  // ШИМ растет на 10 каждую секунду: 
 }
 
 void driveTest(int16_t pwm, uint32_t time) {  // ждем 3 секунды, едем time миллисекунд с ШИМ pwm, выключаем моторы
-  delay(3000);  // время, чтобы поставить робота на трек и убрать руки
+  delay(3000);                                // время, чтобы поставить робота на трек и убрать руки
   motors(pwm, pwm);
   delay(time);
   motors(0, 0);  // моторы выключены, робот докатывается сам
@@ -108,7 +85,8 @@ void distance() {  // расстояние до препятствия в сан
   delayMicroseconds(10);
   digitalWrite(TRIG, LOW);
 
-  uint32_t duration = pulseIn(ECHO, HIGH, 30000);  // время эха, мкс; ждем не дольше 30 мс, нет эха - 0
+  uint32_t duration = pulseIn(ECHO, HIGH, 30000);  // длительность эха в мкс
+  float distanceCm = duration * 343.0 / (2.0 * 10000.0);
   Serial.print("см ");
-  Serial.println(duration / 58);  // звук проходит 1 см туда и обратно примерно за 58 мкс
+  Serial.println(distanceCm);
 }
