@@ -1,5 +1,7 @@
 # Урок 01. Питание и движение
 
+[← Урок 00](../lesson-00-robot-test/README.md) · [Оглавление](../README.md#занятия) · [Урок 02 →](../lesson-02-line-pd/README.md)
+
 [Стартовый скетч для Arduino Nano](firmware/lesson-01-movement/lesson-01-movement.ino)
 
 ## Питание
@@ -47,4 +49,4 @@
 
 Если вместо поворота на месте робот едет прямо, проверьте знаки аргументов `motors()`: для разворота колёса должны вращаться в разные стороны.
 
-[К оглавлению](../README.md)
+[← Урок 00](../lesson-00-robot-test/README.md) · [Оглавление](../README.md#занятия) · [Урок 02 →](../lesson-02-line-pd/README.md)
