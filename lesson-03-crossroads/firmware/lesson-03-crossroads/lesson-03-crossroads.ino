@@ -28,23 +28,27 @@ void motors(int16_t speed1, int16_t speed2) {  // двигаться (левый
 }
 
 void followLine() {
+  // TODO 1: перенесите настройки ПД из урока 02 и подберите ki на длинной дуге.
   const int16_t speed = 150;
-  // TODO 1: перенесите настройки ПД, добавьте И-составляющую и сравните два заезда на дуге.
   const float kp = 0.0;
   const float kd = 0.0;
-  static int16_t errOld = 0;  // ошибка на предыдущем шаге
+  const float ki = 0.0;
+  static int16_t errOld = 0;    // ошибка на предыдущем шаге
+  static float integral = 0.0;  // сумма ошибок с начала заезда
 
   // Ошибка положения: показание левого датчика минус показание правого.
   int16_t err = analogRead(LEFT_SENS) - analogRead(RIGHT_SENS);
 
-  // Для Д-составляющей находим изменение ошибки за один шаг.
+  // Для Д-составляющей находим изменение ошибки, для И-составляющей накапливаем сумму.
   int16_t dErr = err - errOld;
-  errOld = err;  // запоминаем ошибку для следующего шага
+  errOld = err;
+  integral = integral + err;
 
-  // Управляющее воздействие: поправку прибавляем к скорости левого колеса
-  // и вычитаем из скорости правого.
-  float control = kp * err + kd * dErr;
-  motors(speed + control, speed - control);
+  // Управляющее воздействие складывается из трёх составляющих: П, И и Д.
+  float control = kp * err + ki * integral + kd * dErr;
+  int16_t left = constrain(speed + control, -255, 255);
+  int16_t right = constrain(speed - control, -255, 255);
+  motors(left, right);
   delay(10);
 }
 
