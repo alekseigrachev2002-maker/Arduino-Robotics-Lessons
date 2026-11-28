@@ -43,6 +43,7 @@ void followLine() {
   int16_t dErr = err - errOld;
   errOld = err;
   integral = integral + err;
+  integral = constrain(integral, -25000.0, 25000.0);  // предел при ki = 0.002
 
   // Управляющее воздействие складывается из трех составляющих: П, И и Д.
   float control = kp * err + ki * integral + kd * dErr;
