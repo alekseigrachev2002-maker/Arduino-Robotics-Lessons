@@ -28,10 +28,10 @@ void motors(int16_t speed1, int16_t speed2) {  // первый аргумент 
 }
 
 void followLine() {
-  // TODO 1: перенесите настройки ПД из урока 02 и подберите ki на длинной дуге.
+  // TODO 1: настройте ПД (урок 02) и подберите ki на длинной дуге.
   const int16_t speed = 150;
-  const float kp = 0.0;
-  const float kd = 0.0;
+  const float kp = 0.2;
+  const float kd = 1.0;
   const float ki = 0.0;
   static int16_t errOld = 0;    // ошибка на предыдущем шаге
   static float integral = 0.0;  // сумма ошибок с начала заезда
