@@ -6,8 +6,8 @@
 #define LEFT_SENS A0   // пин левого датчика линии
 #define RIGHT_SENS A1  // пин правого датчика линии
 
-void motors(int16_t speed1, int16_t speed2) {  // двигаться (левый мотор, правый мотор)
-  speed1 = constrain(speed1, -255, 255);       // сначала ограничиваем скорость от -255 до 255
+void motors(int16_t speed1, int16_t speed2) {  // первый аргумент управляет левым мотором, второй — правым
+  speed1 = constrain(speed1, -255, 255);       // ограничиваем команду диапазоном от -255 до 255
   speed2 = constrain(speed2, -255, 255);
 
   if (speed1 > 0) {  // подаем speed1 на пины первого мотора
@@ -44,7 +44,7 @@ void followLine() {
   errOld = err;
   integral = integral + err;
 
-  // Управляющее воздействие складывается из трёх составляющих: П, И и Д.
+  // Управляющее воздействие складывается из трех составляющих: П, И и Д.
   float control = kp * err + ki * integral + kd * dErr;
   int16_t left = constrain(speed + control, -255, 255);
   int16_t right = constrain(speed - control, -255, 255);
@@ -53,11 +53,11 @@ void followLine() {
 }
 
 uint16_t crossRoad() {
-  const int16_t threshold = 500;  // TODO 2: выберите порог чёрного по измерениям обоих датчиков.
+  const int16_t threshold = 500;  // TODO 2: выберите порог черного по измерениям обоих датчиков.
   uint16_t count = 0;
   static bool wasCross = false;
   bool isCross = analogRead(LEFT_SENS) < threshold && analogRead(RIGHT_SENS) < threshold;
-  // TODO 3: исправьте три ошибки в счётчике. Один въезд — один отсчёт.
+  // TODO 3: исправьте три ошибки в счетчике. Один въезд — один отсчет.
   if (isCross) {
     count = count + 1;
   }
@@ -65,17 +65,17 @@ uint16_t crossRoad() {
 }
 
 void setup() {
-  pinMode(IN1, OUTPUT);  // пины моторов в режиме OUTPUT - управляем нагрузкой
+  pinMode(IN1, OUTPUT);  // настраиваем пины управления моторами как выходы
   pinMode(IN2, OUTPUT);
   pinMode(IN3, OUTPUT);
   pinMode(IN4, OUTPUT);
 
-  Serial.begin(9600);  // открываем монитор порта
+  Serial.begin(9600);  // задаем скорость обмена с монитором порта
 }
 
 void loop() {
   uint16_t crossings = crossRoad();
-  // Serial.println(crossings);  // для проверки счётчика на столе
-  // TODO 4: остановитесь на пятом перекрёстке и сохраняйте остановку.
+  // Serial.println(crossings);  // для проверки счетчика на столе
+  // TODO 4: остановитесь на пятом перекрестке и сохраняйте остановку.
   followLine();
 }

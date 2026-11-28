@@ -1,7 +1,7 @@
 #include "robot-test.h"
 
-void motors(int16_t speed1, int16_t speed2) {  // двигаться (левый мотор, правый мотор)
-  speed1 = constrain(speed1, -255, 255);       // сначала ограничиваем скорость от -255 до 255
+void motors(int16_t speed1, int16_t speed2) {  // первый аргумент управляет левым мотором, второй — правым
+  speed1 = constrain(speed1, -255, 255);       // ограничиваем команду диапазоном от -255 до 255
   speed2 = constrain(speed2, -255, 255);
 
   if (speed1 > 0) {  // подаем speed1 на пины первого мотора
@@ -48,7 +48,7 @@ void wheelsTest() {  // каждое колесо вперед и назад п�
   Serial.println("стоп");
 }
 
-void startTest() {  // ШИМ растет на 10 каждую секунду: запишите, при каком ШИМ поехало каждое колесо
+void startTest() {  // ШИМ растет на 10 каждую секунду: запишите, при каком ШИМ начало вращаться каждое колесо
   for (int16_t pwm = 0; pwm <= 250; pwm = pwm + 10) {
     Serial.print("ШИМ ");
     Serial.println(pwm);

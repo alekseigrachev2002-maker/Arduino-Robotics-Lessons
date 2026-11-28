@@ -6,8 +6,8 @@
 #define LEFT_SENS A0   // пин левого датчика линии
 #define RIGHT_SENS A1  // пин правого датчика линии
 
-void motors(int16_t speed1, int16_t speed2) {  // двигаться (левый мотор, правый мотор)
-  speed1 = constrain(speed1, -255, 255);       // сначала ограничиваем скорость от -255 до 255
+void motors(int16_t speed1, int16_t speed2) {  // первый аргумент управляет левым мотором, второй — правым
+  speed1 = constrain(speed1, -255, 255);       // ограничиваем команду диапазоном от -255 до 255
   speed2 = constrain(speed2, -255, 255);
 
   if (speed1 > 0) {  // подаем speed1 на пины первого мотора
@@ -40,7 +40,7 @@ void sensors() {
 
 void followLine() {
   const int16_t speed = 150;
-  const float kp = 0.0;  // TODO 3: при нулевом kd увеличивайте kp, пока робот не начнёт вписываться в поворот.
+  const float kp = 0.0;  // TODO 3: при нулевом kd увеличивайте kp, пока робот не начнет вписываться в поворот.
   const float kd = 0.0;  // TODO 4: сохраните kp и подберите kd, чтобы погасить раскачку.
   static int16_t errOld = 0;  // ошибка на предыдущем шаге
 
@@ -58,15 +58,15 @@ void followLine() {
 }
 
 void setup() {
-  pinMode(IN1, OUTPUT);  // пины моторов в режиме OUTPUT - управляем нагрузкой
+  pinMode(IN1, OUTPUT);  // настраиваем пины управления моторами как выходы
   pinMode(IN2, OUTPUT);
   pinMode(IN3, OUTPUT);
   pinMode(IN4, OUTPUT);
 
-  Serial.begin(9600);  // открываем монитор порта
+  Serial.begin(9600);  // задаем скорость обмена с монитором порта
 }
 
 void loop() {
-  sensors();        // TODO 1: измерьте L, R и их разность на белом и чёрном.
-  // followLine();  // TODO 2: включите движение по линии. При нулевых коэффициентах проверьте команды колёсам.
+  sensors();        // TODO 1: измерьте L, R и их разность на белом и черном.
+  // followLine();  // TODO 2: включите движение по линии. При нулевых коэффициентах проверьте команды колесам.
 }
